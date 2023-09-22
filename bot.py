@@ -150,12 +150,12 @@ async def calc(message: types.Message):
     await bot.send_message(chat_id=message.from_user.id,
                            text=st)
 
+
 @dp.message_handler(lambda message: message.text == '.')
 async def calc(message: types.Message):
     global st
     global num
-    num = float(num)
-    num = str(num)
+    num += '.'
     st += '.'
     await bot.send_message(chat_id=message.from_user.id,
                            text=st)
@@ -175,14 +175,84 @@ async def calc(message: types.Message):
         else:
             number += i
     try:
-        # number = number[::-1]
-        # if st.isdigit():
-        #     temp: int = int(number)
-        # else:
-        #     temp: float = float(number)
         res += float(number[::-1])
         st += " + "
         sign = "+"
+        num = ""
+        await bot.send_message(chat_id=message.from_user.id,
+                               text=st)
+    except:
+        await bot.send_message(chat_id=message.from_user.id,
+                               text="Введите число")
+
+
+@dp.message_handler(lambda message: message.text == '-')
+async def calc(message: types.Message):
+    global st
+    global res
+    global sign
+    global num
+
+    number: str = ""
+    for i in st[::-1]:
+        if i == " ":
+            break
+        else:
+            number += i
+    try:
+        res += float(number[::-1])
+        st += " - "
+        sign = "-"
+        num = ""
+        await bot.send_message(chat_id=message.from_user.id,
+                               text=st)
+    except:
+        await bot.send_message(chat_id=message.from_user.id,
+                               text="Введите число")
+
+
+@dp.message_handler(lambda message: message.text == '*')
+async def calc(message: types.Message):
+    global st
+    global res
+    global sign
+    global num
+
+    number: str = ""
+    for i in st[::-1]:
+        if i == " ":
+            break
+        else:
+            number += i
+    try:
+        res += float(number[::-1])
+        st += " * "
+        sign = "*"
+        num = ""
+        await bot.send_message(chat_id=message.from_user.id,
+                               text=st)
+    except:
+        await bot.send_message(chat_id=message.from_user.id,
+                               text="Введите число")
+
+
+@dp.message_handler(lambda message: message.text == '/')
+async def calc(message: types.Message):
+    global st
+    global res
+    global sign
+    global num
+
+    number: str = ""
+    for i in st[::-1]:
+        if i == " ":
+            break
+        else:
+            number += i
+    try:
+        res += float(number[::-1])
+        st += " / "
+        sign = "/"
         num = ""
         await bot.send_message(chat_id=message.from_user.id,
                                text=st)
@@ -197,25 +267,33 @@ async def calc(message: types.Message):
     global res
     global sign
     global num
-    if sign == "+":
-        res += float(num)
-    elif sign == "-":
-        res -= num
-    elif sign == "*":
-        res *= num
-    elif sign == "/":
-        res /= num
-    s = str(res)
-    if s[-1] == "0":
-        res = int(res)
-    else:
-        res = float(res)
-    await bot.send_message(chat_id=message.from_user.id,
-                           text=str(res))
+    try:
+        if sign == "+":
+            res += float(num)
+        elif sign == "-":
+            res -= float(num)
+        elif sign == "*":
+            res *= float(num)
+        elif sign == "/":
+            res /= float(num)
+
+        s = str(res)
+        if s[-1] != "0":
+            res = float(res)
+        else:
+            res = int(res)
+
+        await bot.send_message(chat_id=message.from_user.id,
+                               text=str(res))
+    except:
+        await bot.send_message(chat_id=message.from_user.id,
+                               text="На ноль делить нельзя!")
+    res = int(res)
     res = 0
     sign = ""
     num = ""
     st = ""
+
 
 if __name__ == "__main__":
     executor.start_polling(dp, skip_updates=True)
