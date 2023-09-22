@@ -150,6 +150,16 @@ async def calc(message: types.Message):
     await bot.send_message(chat_id=message.from_user.id,
                            text=st)
 
+@dp.message_handler(lambda message: message.text == '.')
+async def calc(message: types.Message):
+    global st
+    global num
+    num = float(num)
+    num = str(num)
+    st += '.'
+    await bot.send_message(chat_id=message.from_user.id,
+                           text=st)
+
 
 @dp.message_handler(lambda message: message.text == '+')
 async def calc(message: types.Message):
@@ -165,12 +175,12 @@ async def calc(message: types.Message):
         else:
             number += i
     try:
-        number = number[::-1]
-        if st in '.':
-            temp: float = float(number)
-        else:
-            temp: int = int(number)
-        res += temp
+        # number = number[::-1]
+        # if st.isdigit():
+        #     temp: int = int(number)
+        # else:
+        #     temp: float = float(number)
+        res += float(number[::-1])
         st += " + "
         sign = "+"
         num = ""
@@ -188,14 +198,18 @@ async def calc(message: types.Message):
     global sign
     global num
     if sign == "+":
-        res += int(num)
+        res += float(num)
     elif sign == "-":
         res -= num
     elif sign == "*":
         res *= num
     elif sign == "/":
         res /= num
-
+    s = str(res)
+    if s[-1] == "0":
+        res = int(res)
+    else:
+        res = float(res)
     await bot.send_message(chat_id=message.from_user.id,
                            text=str(res))
     res = 0
