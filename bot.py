@@ -1,168 +1,111 @@
 from aiogram import Bot, Dispatcher, types, executor
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 import os
 from dotenv import load_dotenv, find_dotenv
 from keyboard import kb
+from click import Click
+from calc import Calc
 
 load_dotenv(find_dotenv())
 
+cl = Click()
+calculator = Calc()
 
 bot = Bot(os.getenv(('TOKEN')))
 dp = Dispatcher(bot)
 
-st: str = ""
-res: float = 0
-sign: str = ""
-num: str = ""
-
-
 @dp.message_handler(commands=["start"])
 async def start_handler(message: types.Message):
-    global st
-    st = ""
+    cl.clean_all()
     await message.answer(text="Калькулятор",
                          reply_markup=kb)
 
 
 @dp.message_handler(lambda message: message.text == '1')
 async def calc(message: types.Message):
-    global st
-    global num
-    st += '1'
-    num += '1'
-
+    cl.click_num("1", "1")
     await bot.send_message(chat_id=message.from_user.id,
-                           text=st)
+                           text=cl.st)
 
 
 @dp.message_handler(lambda message: message.text == '2')
 async def calc(message: types.Message):
-    global st
-    global num
-    st += '2'
-    num += '2'
-
+    cl.click_num("2", "2")
     await bot.send_message(chat_id=message.from_user.id,
-                           text=st)
-
+                           text=cl.st)
 
 @dp.message_handler(lambda message: message.text == '3')
 async def calc(message: types.Message):
-    global st
-    global num
-    st += '3'
-    num += '3'
-
+    cl.click_num("3", "3")
     await bot.send_message(chat_id=message.from_user.id,
-                           text=st)
+                           text=cl.st)
 
 
 @dp.message_handler(lambda message: message.text == '4')
 async def calc(message: types.Message):
-    global st
-    global num
-    num += '4'
-    st += '4'
-
+    cl.click_num("4", "4")
     await bot.send_message(chat_id=message.from_user.id,
-                           text=st)
+                           text=cl.st)
 
 
 @dp.message_handler(lambda message: message.text == '5')
 async def calc(message: types.Message):
-    global st
-    global num
-    num += '5'
-    st += '5'
-
+    cl.click_num("5", "5")
     await bot.send_message(chat_id=message.from_user.id,
-                           text=st)
+                           text=cl.st)
 
 
 @dp.message_handler(lambda message: message.text == '6')
 async def calc(message: types.Message):
-    global st
-    global num
-    num += '6'
-    st += '6'
-
+    cl.click_num("6", "6")
     await bot.send_message(chat_id=message.from_user.id,
-                           text=st)
+                           text=cl.st)
 
 
 @dp.message_handler(lambda message: message.text == '7')
 async def calc(message: types.Message):
-    global st
-    global num
-    num += '7'
-    st += '7'
-
+    cl.click_num("7", "7")
     await bot.send_message(chat_id=message.from_user.id,
-                           text=st)
+                           text=cl.st)
 
 
 @dp.message_handler(lambda message: message.text == '8')
 async def calc(message: types.Message):
-    global st
-    global num
-    num += '8'
-    st += '8'
-
+    cl.click_num("8", "8")
     await bot.send_message(chat_id=message.from_user.id,
-                           text=st)
+                           text=cl.st)
 
 
 @dp.message_handler(lambda message: message.text == '9')
 async def calc(message: types.Message):
-    global st
-    global num
-    num += '9'
-    st += '9'
-
+    cl.click_num("9", "9")
     await bot.send_message(chat_id=message.from_user.id,
-                           text=st)
+                           text=cl.st)
 
 
 @dp.message_handler(lambda message: message.text == '0')
 async def calc(message: types.Message):
-    global st
-    global num
-    num += '0'
-    st += '0'
+    cl.click_num("0", "0")
     await bot.send_message(chat_id=message.from_user.id,
-                           text=st)
+                           text=cl.st)
 
 
 @dp.message_handler(lambda message: message.text == '.')
 async def calc(message: types.Message):
-    global st
-    global num
-    num += '.'
-    st += '.'
     await bot.send_message(chat_id=message.from_user.id,
-                           text=st)
+                           text=cl.click_num(".", "."))
 
 
 @dp.message_handler(lambda message: message.text == '+')
 async def calc(message: types.Message):
-    global st
-    global res
-    global sign
-    global num
-
-    number: str = ""
-    for i in st[::-1]:
-        if i == " ":
-            break
-        else:
-            number += i
     try:
-        res += float(number[::-1])
-        st += " + "
-        sign = "+"
-        num = ""
+        # calculator.res = calculator.result(cl.num, calculator.sign)
+        calculator.summa(cl.st, "+")
+        cl.set_st("+")
+        calculator.set_sing("+")
+        cl.clean_num()
+
         await bot.send_message(chat_id=message.from_user.id,
-                               text=st)
+                               text=cl.st)
     except:
         await bot.send_message(chat_id=message.from_user.id,
                                text="Введите число")
@@ -170,24 +113,14 @@ async def calc(message: types.Message):
 
 @dp.message_handler(lambda message: message.text == '-')
 async def calc(message: types.Message):
-    global st
-    global res
-    global sign
-    global num
-
-    number: str = ""
-    for i in st[::-1]:
-        if i == " ":
-            break
-        else:
-            number += i
     try:
-        res += float(number[::-1])
-        st += " - "
-        sign = "-"
-        num = ""
+        # calculator.res = calculator.result(cl.num, calculator.sign)
+        calculator.summa(cl.st, "-")
+        cl.set_st("-")
+        calculator.set_sing("-")
+        cl.clean_num()
         await bot.send_message(chat_id=message.from_user.id,
-                               text=st)
+                               text=cl.st)
     except:
         await bot.send_message(chat_id=message.from_user.id,
                                text="Введите число")
@@ -195,24 +128,13 @@ async def calc(message: types.Message):
 
 @dp.message_handler(lambda message: message.text == '*')
 async def calc(message: types.Message):
-    global st
-    global res
-    global sign
-    global num
-
-    number: str = ""
-    for i in st[::-1]:
-        if i == " ":
-            break
-        else:
-            number += i
     try:
-        res += float(number[::-1])
-        st += " * "
-        sign = "*"
-        num = ""
+        calculator.summa(cl.st, "*")
+        cl.set_st("*")
+        calculator.set_sing("*")
+        cl.clean_num()
         await bot.send_message(chat_id=message.from_user.id,
-                               text=st)
+                               text=cl.st)
     except:
         await bot.send_message(chat_id=message.from_user.id,
                                text="Введите число")
@@ -220,24 +142,13 @@ async def calc(message: types.Message):
 
 @dp.message_handler(lambda message: message.text == '/')
 async def calc(message: types.Message):
-    global st
-    global res
-    global sign
-    global num
-
-    number: str = ""
-    for i in st[::-1]:
-        if i == " ":
-            break
-        else:
-            number += i
     try:
-        res += float(number[::-1])
-        st += " / "
-        sign = "/"
-        num = ""
+        calculator.summa(cl.st, "/")
+        cl.set_st("/")
+        calculator.set_sing("/")
+        cl.clean_num()
         await bot.send_message(chat_id=message.from_user.id,
-                               text=st)
+                               text=cl.st)
     except:
         await bot.send_message(chat_id=message.from_user.id,
                                text="Введите число")
@@ -245,36 +156,15 @@ async def calc(message: types.Message):
 
 @dp.message_handler(lambda message: message.text == '=')
 async def calc(message: types.Message):
-    global st
-    global res
-    global sign
-    global num
     try:
-        if sign == "+":
-            res += float(num)
-        elif sign == "-":
-            res -= float(num)
-        elif sign == "*":
-            res *= float(num)
-        elif sign == "/":
-            res /= float(num)
-
-        s = str(res)
-        if s[-1] != "0":
-            res = float(res)
-        else:
-            res = int(res)
-
         await bot.send_message(chat_id=message.from_user.id,
-                               text=str(res))
+                               text=str(calculator.result(cl.num, calculator.sign)))
     except:
         await bot.send_message(chat_id=message.from_user.id,
                                text="На ноль делить нельзя!")
-    res = int(res)
-    res = 0
-    sign = ""
-    num = ""
-    st = ""
+    finally:
+        calculator.clean_res()
+        cl.clean_all()
 
 
 if __name__ == "__main__":
