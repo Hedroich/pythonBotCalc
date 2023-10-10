@@ -2,10 +2,10 @@ class Calc:
     res: float = 0
     sign: str = ""
 
-    def set_sing(self, sign: str):
+    def set_sing(self, sign: str) -> None:
         self.sign = sign
 
-    def summa(self, s: str, si: str):
+    def summa(self, s: str, si: str) -> None:
         number: str = ""
         for i in s[::-1]:
             if i == " " or not i.isdigit():
@@ -32,7 +32,7 @@ class Calc:
             else:
                 self.res /= num
 
-    def result(self, n: str, si: str):
+    def result(self, n: str, si: str) -> float:
         n = float(n)
         if si == "+":
             self.res += n
@@ -51,5 +51,5 @@ class Calc:
         self.sign = ""
         return self.res
 
-    def clean_res(self):
+    def clean_res(self) -> None:
         self.res = 0
